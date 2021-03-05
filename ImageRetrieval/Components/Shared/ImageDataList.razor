@@ -1,0 +1,50 @@
+﻿<RadzenDataList WrapItems="true" AllowPaging="false" Data="@_displayImages" TItem="string">
+    <Template Context="fileName">
+        @{ var filePath = $"oxbuild_images/{fileName}"; }
+        <div class="card text-center">
+            <img src="@filePath" class="img-fluid custom-image" style="max-height: 240px;">
+            <p class="pt-2">@fileName</p>
+        </div>
+    </Template>
+</RadzenDataList>
+<RadzenPager Count="Images.Count" PageSize="@PageSize" PageNumbersCount="@_pagesCount" PageChanged="@PageChanged"/>
+
+@code
+{
+    private int _pagesCount;
+    private List<string> _displayImages = new();
+
+    [Parameter]
+    public int PageSize { get; set; }
+
+    [Parameter]
+    public List<string> Images { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Refresh();
+    }
+
+    protected override void OnParametersSet()
+    {
+        Refresh();
+    }
+
+    private void Refresh()
+    {
+        _pagesCount = 1 + (int)Math.Floor((decimal)Images.Count / PageSize);
+        _pagesCount = _pagesCount > 20 ? 20 : _pagesCount;
+        _displayImages = GetDisplay(0, PageSize);
+    }
+
+
+    private void PageChanged(PagerEventArgs args)
+    {
+        _displayImages = GetDisplay(args.Skip, args.Top);
+    }
+
+    private List<string> GetDisplay(int skip, int take)
+    {
+        return Images.Skip(skip).Take(take).ToList();
+    }
+}

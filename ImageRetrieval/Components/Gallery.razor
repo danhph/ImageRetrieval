@@ -1,0 +1,45 @@
+﻿@page "/gallery"
+
+@inherits OwningComponentBase<ImageSearchEngine>
+@inject IJSRuntime IjsRuntime
+
+<div class="d-flex justify-content-center">
+    <div class="col-md-6">
+        <div class="d-flex">
+            <input @oninput="OnSearch" class="form-control" type="text" placeholder="Search with filename ...">
+        </div>
+    </div>
+</div>
+
+<ImageDataList PageSize="10" Images="@_matchImages"></ImageDataList>
+
+@code {
+
+    private List<string> _matchImages;
+
+
+    protected override Task OnInitializedAsync()
+    {
+        _matchImages = Service.GetAllImages();
+        return Task.CompletedTask;
+    }
+
+    private Task OnSearch(ChangeEventArgs e)
+    {
+        var matchImages = Service.GetAllImages();
+        if (e.Value != null)
+        {
+            var searchStr = e.Value.ToString();
+            if (!string.IsNullOrEmpty(searchStr))
+            {
+                matchImages = matchImages
+                    .Where(imageName => imageName.Contains(searchStr, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+            }
+        }
+        _matchImages = matchImages;
+        InvokeAsync(StateHasChanged);
+        return Task.CompletedTask;
+    }
+    
+}

@@ -1,0 +1,35 @@
+﻿@page "/"
+@using ImageRetrieval.Components
+@namespace ImageRetrieval.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image Retrieval</title>
+    <base href="~/" />
+    <link rel="stylesheet" href="lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="lib/twitter-bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="lib/cropperjs/cropper.min.css">
+    <link rel="stylesheet" href="_content/Radzen.Blazor/css/default-base.css">
+    <link rel="stylesheet" href="css/custom.css">
+</head>
+<body class="d-flex flex-column vh-100">
+    <component type="typeof(App)" render-mode="ServerPrerendered" />
+
+<script src="_framework/blazor.server.js"></script>
+<script>
+    Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
+        document.location.reload();
+    }
+</script>
+<script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
+<script src="lib/jquery/jquery.min.js"></script>
+<script src="lib/popper.js/umd/popper.min.js"></script>
+<script src="lib/twitter-bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="lib/cropperjs/cropper.js"></script>
+<script src="js/custom.js"></script>
+</body>
+</html>
